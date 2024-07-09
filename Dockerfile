@@ -11,6 +11,9 @@ RUN go mod download
 # Copy the source code
 COPY . .
 
+# Run tests with coverage
+RUN go test ./... -coverprofile=coverage.out
+
 # Build the Go application
 RUN CGO_ENABLED=0 GOOS=linux go build -o myapp .
 
