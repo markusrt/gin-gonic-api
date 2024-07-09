@@ -10,5 +10,5 @@ func Test_ConnectToDB_DoesNotReturnNil(t *testing.T) {
 	db := ConnectToDB()
 
 	assert.Equal(t, db.Error, nil, "Success Connect to Database")
-	assert.Nil(t, db)
+	assert.NotNil(t, db)
 }
