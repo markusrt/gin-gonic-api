@@ -6,7 +6,5 @@ type User struct {
 	Email    string `gorm:"column:email" json:"email"`
 	Password string `gorm:"column:password;->:false" json:"-"`
 	Status   int    `gorm:"column:status" json:"status"`
-	RoleID   int    `gorm:"column:role_id;not null" json:"role_id"`
-	Role     Role   `gorm:"foreignKey:RoleID;references:ID" json:"role"`
 	BaseModel
 }

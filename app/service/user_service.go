@@ -43,7 +43,6 @@ func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
 		pkg.PanicException(constant.DataNotFound)
 	}
 
-	data.RoleID = request.RoleID
 	data.Email = request.Email
 	data.Name = request.Password
 	data.Status = request.Status

@@ -11,7 +11,7 @@ import (
 func ConnectToDB() *gorm.DB {
 	var err error
 
-	db, err := gorm.Open(gormlite.Open("gorm.db"), &gorm.Config{})
+	db, err := gorm.Open(gormlite.Open(":memory:"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Error connecting to database. Error: ", err)
 	}
