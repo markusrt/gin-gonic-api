@@ -10,28 +10,35 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func AddUserData_CallsUserService(t *testing.T) {
-	context, w := GetTestGinContext()
+func setupTest() (*gin.Context, *httptest.ResponseRecorder, *MockUserService) {
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	request, _ := http.NewRequest("GET", "/", nil)
+	context.Request = request
 	mockUserService := new(MockUserService)
+	return context, recorder, mockUserService
+}
+
+func Test_AddUserData_CallsUserService(t *testing.T) {
+	context, recorder, mockUserService := setupTest()
 	mockUserService.On("AddUserData", context).Return()
 	userControllerImpl := UserControllerInit(mockUserService)
 
 	userControllerImpl.AddUserData(context)
 
 	mockUserService.AssertCalled(t, "AddUserData", context)
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
-func AddUserData_DeleteUser(t *testing.T) {
-	context, w := GetTestGinContext()
-	mockUserService := new(MockUserService)
+func Test_AddUserData_DeleteUser(t *testing.T) {
+	context, recorder, mockUserService := setupTest()
 	mockUserService.On("DeleteUser", context).Return()
 	userControllerImpl := UserControllerInit(mockUserService)
 
 	userControllerImpl.DeleteUser(context)
 
 	mockUserService.AssertCalled(t, "DeleteUser", context)
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
 func GetTestGinContext() (*gin.Context, *httptest.ResponseRecorder) {
