@@ -21,11 +21,11 @@ type UserService interface {
 	DeleteUser(c *gin.Context)
 }
 
-type UserServiceImpl struct {
+type LocalUserServiceImpl struct {
 	userRepository repository.UserRepository
 }
 
-func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
+func (u LocalUserServiceImpl) UpdateUserData(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program update user data by id")
@@ -56,7 +56,7 @@ func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) GetUserById(c *gin.Context) {
+func (u LocalUserServiceImpl) GetUserById(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program get user by id")
@@ -71,7 +71,7 @@ func (u UserServiceImpl) GetUserById(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) AddUserData(c *gin.Context) {
+func (u LocalUserServiceImpl) AddUserData(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program add data user")
@@ -93,7 +93,7 @@ func (u UserServiceImpl) AddUserData(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) GetAllUser(c *gin.Context) {
+func (u LocalUserServiceImpl) GetAllUser(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute get all data user")
@@ -107,7 +107,7 @@ func (u UserServiceImpl) GetAllUser(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) DeleteUser(c *gin.Context) {
+func (u LocalUserServiceImpl) DeleteUser(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute delete data user by id")
@@ -122,8 +122,8 @@ func (u UserServiceImpl) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, pkg.Null()))
 }
 
-func UserServiceInit(userRepository repository.UserRepository) *UserServiceImpl {
-	return &UserServiceImpl{
+func UserServiceInit(userRepository repository.UserRepository) *LocalUserServiceImpl {
+	return &LocalUserServiceImpl{
 		userRepository: userRepository,
 	}
 }

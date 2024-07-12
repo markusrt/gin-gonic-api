@@ -19,6 +19,19 @@ curl -X POST --header "Content-Type: application/json" --data '{"name":"Test Use
 curl -X GET http://localhost:8080/api/users/1
 ```
 
+## Development
+
+### Setup environment
+
+- Install golang 1.22.x
+- Install wire `go install github.com/google/wire/cmd/wire@latest`
+
+### Update dependency wiring (if needed)
+
+```bash
+go generate ./...
+```
+
 ## Testing
 
 ```bash

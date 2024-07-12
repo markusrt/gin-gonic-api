@@ -15,7 +15,7 @@ import (
 var db = wire.NewSet(ConnectToDB)
 
 var userServiceSet = wire.NewSet(service.UserServiceInit,
-	wire.Bind(new(service.UserService), new(*service.UserServiceImpl)),
+	wire.Bind(new(service.UserService), new(*service.LocalUserServiceImpl)),
 )
 
 var userRepoSet = wire.NewSet(repository.UserRepositoryInit,
