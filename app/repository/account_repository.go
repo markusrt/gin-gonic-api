@@ -11,7 +11,7 @@ type AccountRepository interface {
 	FindAllAccount() ([]dao.Account, error)
 	FindAccountById(id int) (dao.Account, error)
 	Save(account *dao.Account) (dao.Account, error)
-	DeleteAccountById(id int) error
+	DeleteById(id int) error
 }
 
 type AccountRepositoryImpl struct {
@@ -51,7 +51,7 @@ func (u AccountRepositoryImpl) Save(account *dao.Account) (dao.Account, error) {
 	return *account, nil
 }
 
-func (u AccountRepositoryImpl) DeleteAccountById(id int) error {
+func (u AccountRepositoryImpl) DeleteById(id int) error {
 	err := u.db.Delete(&dao.Account{}, id).Error
 	if err != nil {
 		log.Error("Got an error when delete account. Error: ", err)

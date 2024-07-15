@@ -16,9 +16,9 @@ func Init(init *config.Initialization) *gin.Engine {
 	{
 		accounts := api.Group("/accounts")
 		{
-			accounts.GET("", init.AccountCtrl.GetAllAccountData)
-			accounts.POST("", init.AccountCtrl.AddAccountData)
-			accounts.GET("/:accountID", init.AccountCtrl.GetAccountById)
+			accounts.GET("", init.AccountCtrl.AccountSummary)
+			accounts.POST("", init.AccountCtrl.CreateAccount)
+			accounts.GET("/:accountID", init.AccountCtrl.AccountDetails)
 			accounts.PUT("/:accountID", init.AccountCtrl.UpdateAccountData)
 			accounts.DELETE("/:accountID", init.AccountCtrl.DeleteAccount)
 		}

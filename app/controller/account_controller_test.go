@@ -19,25 +19,25 @@ func setupTest() (*gin.Context, *httptest.ResponseRecorder, *MockAccountService)
 	return context, recorder, mockAccountService
 }
 
-func Test_AddAccountData_CallsAccountService(t *testing.T) {
+func Test_CreateAccount_CallsAccountService(t *testing.T) {
 	context, recorder, mockAccountService := setupTest()
-	mockAccountService.On("AddAccountData", context).Return()
+	mockAccountService.On("CreateAccount", context).Return()
 	accountControllerImpl := AccountControllerInit(mockAccountService)
 
-	accountControllerImpl.AddAccountData(context)
+	accountControllerImpl.CreateAccount(context)
 
-	mockAccountService.AssertCalled(t, "AddAccountData", context)
+	mockAccountService.AssertCalled(t, "CreateAccount", context)
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
-func Test_AddAccountData_DeleteAccount(t *testing.T) {
+func Test_CreateAccount_DeleteAccount(t *testing.T) {
 	context, recorder, mockAccountService := setupTest()
-	mockAccountService.On("DeleteAccount", context).Return()
+	mockAccountService.On("Delete", context).Return()
 	accountControllerImpl := AccountControllerInit(mockAccountService)
 
 	accountControllerImpl.DeleteAccount(context)
 
-	mockAccountService.AssertCalled(t, "DeleteAccount", context)
+	mockAccountService.AssertCalled(t, "Delete", context)
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 

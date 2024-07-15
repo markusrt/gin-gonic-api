@@ -14,11 +14,11 @@ import (
 )
 
 type AccountService interface {
-	GetAllAccount(c *gin.Context)
-	GetAccountById(c *gin.Context)
-	AddAccountData(c *gin.Context)
+	GetAll(c *gin.Context)
+	Retrieve(c *gin.Context)
+	CreateAccount(c *gin.Context)
 	UpdateAccountData(c *gin.Context)
-	DeleteAccount(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
 type LocalAccountServiceImpl struct {
@@ -56,7 +56,7 @@ func (u LocalAccountServiceImpl) UpdateAccountData(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u LocalAccountServiceImpl) GetAccountById(c *gin.Context) {
+func (u LocalAccountServiceImpl) Retrieve(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program get account by id")
@@ -71,7 +71,7 @@ func (u LocalAccountServiceImpl) GetAccountById(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u LocalAccountServiceImpl) AddAccountData(c *gin.Context) {
+func (u LocalAccountServiceImpl) CreateAccount(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program add data account")
@@ -93,7 +93,7 @@ func (u LocalAccountServiceImpl) AddAccountData(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u LocalAccountServiceImpl) GetAllAccount(c *gin.Context) {
+func (u LocalAccountServiceImpl) GetAll(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute get all data account")
@@ -107,13 +107,13 @@ func (u LocalAccountServiceImpl) GetAllAccount(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u LocalAccountServiceImpl) DeleteAccount(c *gin.Context) {
+func (u LocalAccountServiceImpl) Delete(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute delete data account by id")
 	accountID, _ := strconv.Atoi(c.Param("accountID"))
 
-	err := u.accountRepository.DeleteAccountById(accountID)
+	err := u.accountRepository.DeleteById(accountID)
 	if err != nil {
 		log.Error("Happened Error when try delete data account from DB. Error:", err)
 		pkg.PanicException(constant.UnknownError)

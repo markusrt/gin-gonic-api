@@ -9,15 +9,15 @@ type MockAccountService struct {
 	mock.Mock
 }
 
-func (m *MockAccountService) GetAllAccount(c *gin.Context) {
+func (m *MockAccountService) GetAll(c *gin.Context) {
 	m.Called(c)
 }
 
-func (m *MockAccountService) GetAccountById(c *gin.Context) {
+func (m *MockAccountService) Retrieve(c *gin.Context) {
 	m.Called(c)
 }
 
-func (m *MockAccountService) AddAccountData(c *gin.Context) {
+func (m *MockAccountService) CreateAccount(c *gin.Context) {
 	m.Called(c)
 }
 
@@ -25,6 +25,6 @@ func (m *MockAccountService) UpdateAccountData(c *gin.Context) {
 	m.Called(c)
 }
 
-func (m *MockAccountService) DeleteAccount(c *gin.Context) {
+func (m *MockAccountService) Delete(c *gin.Context) {
 	m.Called(c)
 }
