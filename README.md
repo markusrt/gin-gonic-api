@@ -14,9 +14,9 @@ go build -o api
 Either via browser on <http://localhost:8080> or via `curl`:
 
 ```bash
-curl -X GET http://localhost:8080/api/users
-curl -X POST --header "Content-Type: application/json" --data '{"name":"Test User","email":"test@foo.com"}' http://localhost:8080/api/users
-curl -X GET http://localhost:8080/api/users/1
+curl -X GET http://localhost:8080/api/accounts
+curl -X POST --header "Content-Type: application/json" --data '{"name":"Test Account","email":"test@foo.com"}' http://localhost:8080/api/accounts
+curl -X GET http://localhost:8080/api/accounts/1
 ```
 
 ## Development
@@ -45,3 +45,5 @@ kubectl apply -f tekton-pipeline.yaml
 tanzu apps workload apply gin-gonic-api --git-repo https://github.com/markusrt/gin-gonic-api --git-branch main --type web --label apps.tanzu.vmware.com/has-tests=true --tail
 tanzu apps workload apply go-gin --git-repo https://github.com/markusrt/go-gin --git-branch main --type web --build-env "BP_KEEP_FILES=templates/*"  --label apps.tanzu.vmware.com/has-tests=true --tail
 ```
+
+tanzu apps workload create go-gin --app go-gin --type web --image ghcr.io/markusrt/gin-gonic-api:main@sha256:78a374ff16d3153fd19463aad878cab819ae9d27b3db2d862aabd04607ae37e1

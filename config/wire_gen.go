@@ -21,10 +21,10 @@ import (
 
 func Init() *Initialization {
 	gormDB := ConnectToDB()
-	userRepositoryImpl := repository.UserRepositoryInit(gormDB)
-	LocalUserServiceImpl := service.UserServiceInit(userRepositoryImpl)
-	userControllerImpl := controller.UserControllerInit(LocalUserServiceImpl)
-	initialization := NewInitialization(userRepositoryImpl, LocalUserServiceImpl, userControllerImpl)
+	accountRepositoryImpl := repository.AccountRepositoryInit(gormDB)
+	LocalAccountServiceImpl := service.AccountServiceInit(accountRepositoryImpl)
+	accountControllerImpl := controller.AccountControllerInit(LocalAccountServiceImpl)
+	initialization := NewInitialization(accountRepositoryImpl, LocalAccountServiceImpl, accountControllerImpl)
 	return initialization
 }
 
@@ -32,8 +32,8 @@ func Init() *Initialization {
 
 var db = wire.NewSet(ConnectToDB)
 
-var userServiceSet = wire.NewSet(service.UserServiceInit, wire.Bind(new(service.UserService), new(*service.LocalUserServiceImpl)))
+var accountServiceSet = wire.NewSet(service.AccountServiceInit, wire.Bind(new(service.AccountService), new(*service.LocalAccountServiceImpl)))
 
-var userRepoSet = wire.NewSet(repository.UserRepositoryInit, wire.Bind(new(repository.UserRepository), new(*repository.UserRepositoryImpl)))
+var accountRepoSet = wire.NewSet(repository.AccountRepositoryInit, wire.Bind(new(repository.AccountRepository), new(*repository.AccountRepositoryImpl)))
 
-var userCtrlSet = wire.NewSet(controller.UserControllerInit, wire.Bind(new(controller.UserController), new(*controller.UserControllerImpl)))
+var accountCtrlSet = wire.NewSet(controller.AccountControllerInit, wire.Bind(new(controller.AccountController), new(*controller.AccountControllerImpl)))

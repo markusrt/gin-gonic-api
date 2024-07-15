@@ -10,12 +10,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_GetUsers_ReturnsList(t *testing.T) {
+func Test_GetAccounts_ReturnsList(t *testing.T) {
 	init := config.Init()
 	app := router.Init(init)
 
 	recorder := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/api/users", nil)
+	request, _ := http.NewRequest("GET", "/api/accounts", nil)
 	app.ServeHTTP(recorder, request)
 
 	assert.Equal(t, 200, recorder.Code)
