@@ -13,31 +13,31 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserService interface {
-	GetAllUser(c *gin.Context)
-	GetUserById(c *gin.Context)
-	AddUserData(c *gin.Context)
-	UpdateUserData(c *gin.Context)
-	DeleteUser(c *gin.Context)
+type AccountService interface {
+	GetAll(c *gin.Context)
+	Retrieve(c *gin.Context)
+	CreateAccount(c *gin.Context)
+	UpdateAccountData(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
-type UserServiceImpl struct {
-	userRepository repository.UserRepository
+type LocalAccountServiceImpl struct {
+	accountRepository repository.AccountRepository
 }
 
-func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
+func (u LocalAccountServiceImpl) UpdateAccountData(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
-	log.Info("start to execute program update user data by id")
-	userID, _ := strconv.Atoi(c.Param("userID"))
+	log.Info("start to execute program update account data by id")
+	accountID, _ := strconv.Atoi(c.Param("accountID"))
 
-	var request dao.User
+	var request dao.Account
 	if err := c.ShouldBindJSON(&request); err != nil {
 		log.Error("Happened error when mapping request from FE. Error", err)
 		pkg.PanicException(constant.InvalidRequest)
 	}
 
-	data, err := u.userRepository.FindUserById(userID)
+	data, err := u.accountRepository.FindAccountById(accountID)
 	if err != nil {
 		log.Error("Happened error when get data from database. Error", err)
 		pkg.PanicException(constant.DataNotFound)
@@ -46,7 +46,7 @@ func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
 	data.Email = request.Email
 	data.Name = request.Password
 	data.Status = request.Status
-	u.userRepository.Save(&data)
+	u.accountRepository.Save(&data)
 
 	if err != nil {
 		log.Error("Happened error when updating data to database. Error", err)
@@ -56,13 +56,13 @@ func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) GetUserById(c *gin.Context) {
+func (u LocalAccountServiceImpl) Retrieve(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
-	log.Info("start to execute program get user by id")
-	userID, _ := strconv.Atoi(c.Param("userID"))
+	log.Info("start to execute program get account by id")
+	accountID, _ := strconv.Atoi(c.Param("accountID"))
 
-	data, err := u.userRepository.FindUserById(userID)
+	data, err := u.accountRepository.FindAccountById(accountID)
 	if err != nil {
 		log.Error("Happened error when get data from database. Error", err)
 		pkg.PanicException(constant.DataNotFound)
@@ -71,11 +71,11 @@ func (u UserServiceImpl) GetUserById(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) AddUserData(c *gin.Context) {
+func (u LocalAccountServiceImpl) CreateAccount(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
-	log.Info("start to execute program add data user")
-	var request dao.User
+	log.Info("start to execute program add data account")
+	var request dao.Account
 	if err := c.ShouldBindJSON(&request); err != nil {
 		log.Error("Happened error when mapping request from FE. Error", err)
 		pkg.PanicException(constant.InvalidRequest)
@@ -84,7 +84,7 @@ func (u UserServiceImpl) AddUserData(c *gin.Context) {
 	hash, _ := bcrypt.GenerateFromPassword([]byte(request.Password), 15)
 	request.Password = string(hash)
 
-	data, err := u.userRepository.Save(&request)
+	data, err := u.accountRepository.Save(&request)
 	if err != nil {
 		log.Error("Happened error when saving data to database. Error", err)
 		pkg.PanicException(constant.UnknownError)
@@ -93,37 +93,37 @@ func (u UserServiceImpl) AddUserData(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) GetAllUser(c *gin.Context) {
+func (u LocalAccountServiceImpl) GetAll(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
-	log.Info("start to execute get all data user")
+	log.Info("start to execute get all data account")
 
-	data, err := u.userRepository.FindAllUser()
+	data, err := u.accountRepository.FindAllAccount()
 	if err != nil {
-		log.Error("Happened Error when find all user data. Error: ", err)
+		log.Error("Happened Error when find all account data. Error: ", err)
 		pkg.PanicException(constant.UnknownError)
 	}
 
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (u UserServiceImpl) DeleteUser(c *gin.Context) {
+func (u LocalAccountServiceImpl) Delete(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
-	log.Info("start to execute delete data user by id")
-	userID, _ := strconv.Atoi(c.Param("userID"))
+	log.Info("start to execute delete data account by id")
+	accountID, _ := strconv.Atoi(c.Param("accountID"))
 
-	err := u.userRepository.DeleteUserById(userID)
+	err := u.accountRepository.DeleteById(accountID)
 	if err != nil {
-		log.Error("Happened Error when try delete data user from DB. Error:", err)
+		log.Error("Happened Error when try delete data account from DB. Error:", err)
 		pkg.PanicException(constant.UnknownError)
 	}
 
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, pkg.Null()))
 }
 
-func UserServiceInit(userRepository repository.UserRepository) *UserServiceImpl {
-	return &UserServiceImpl{
-		userRepository: userRepository,
+func AccountServiceInit(accountRepository repository.AccountRepository) *LocalAccountServiceImpl {
+	return &LocalAccountServiceImpl{
+		accountRepository: accountRepository,
 	}
 }
